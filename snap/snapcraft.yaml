@@ -1,6 +1,6 @@
 name: opencodereview
 base: core26
-version: '1.13.2'
+version: '1.13.3'
 title: OpenCodeReview
 summary: AI-powered code reviews from your terminal
 description: |
