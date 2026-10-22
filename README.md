@@ -18,28 +18,36 @@ snapcraft pack
 
 ```bash
 sudo snap install opencodereview
+sudo snap alias opencodereview.ocr ocr
 sudo snap connect opencodereview:removable-media   # optional: /media, /mnt
-opencodereview config provider
-opencodereview config model
+ocr config provider
+ocr config model
 cd ~/my-project
-opencodereview review
+ocr review
 ```
 
-The snap includes Git. Configure a model provider before reviewing code, or use `opencodereview delegate preview` with your AI agent.
+The alias enables the upstream `ocr` command name. Without it, use `opencodereview.ocr`.
 
-To use the upstream `ocr` command name, including in agent integrations:
+For OpenRouter, replace the placeholders with your model ID and API key:
 
 ```bash
-sudo snap alias opencodereview ocr
+ocr config set provider openrouter
+ocr config set model '<openrouter-model-id>'
+ocr config set providers.openrouter.api_key '<openrouter-api-key>'
+# ChatGPT can be used using account plan
+ocr auth login --provider chatgpt [--no-browser]
 ```
 
-View saved reviews with `opencodereview viewer --open=never`, then open the URL printed in the terminal. Configuration and sessions live under `~/snap/opencodereview/common/.opencodereview`.
+These commands save to `~/snap/opencodereview/common/.opencodereview/config.json`.
+
+Configure a model provider before reviewing code, or use `ocr delegate preview` with your AI agent.
+
+View saved reviews with `ocr viewer`. Configuration and sessions live under `~/snap/opencodereview/common/.opencodereview`.
 
 ## Known limitations
 
 - Projects must be in a non-hidden home folder or connected removable storage. Hidden files directly under your home directory are inaccessible.
 - Host credentials and programs are not shared with the snap. Use provider configuration or environment variables, and HTTP MCP servers instead of host commands.
-- Open browser URLs manually. For ChatGPT login, use `opencodereview auth login --provider chatgpt --no-browser`.
 
 ## Update to a new upstream release
 

@@ -8,8 +8,11 @@ description: |
   AI provider. It includes configurable review rules, structured reports,
   saved sessions, and a local browser viewer.
 
-  Configure a provider with opencodereview config provider, review Git changes
-  with opencodereview review, or scan source files with opencodereview scan.
+  To use the upstream ocr command name, run:
+    sudo snap alias opencodereview.ocr ocr
+
+  Configure a provider with ocr config provider, review Git changes with
+  ocr review, or scan source files with ocr scan.
 license: Apache-2.0
 grade: stable
 confinement: strict
@@ -23,9 +26,10 @@ platforms:
   arm64:
 
 apps:
-  opencodereview:
-    command: bin/opencodereview
+  ocr:
+    command: bin/ocr
     plugs:
+      - desktop
       - home
       - network
       - network-bind
@@ -55,5 +59,5 @@ parts:
       install -d "$CRAFT_PART_INSTALL/bin"
       go build -trimpath \
         -ldflags "-s -w -X main.Version=$SNAPCRAFT_PROJECT_VERSION -X main.GitCommit=$commit -X main.BuildDate=$build_date" \
-        -o "$CRAFT_PART_INSTALL/bin/opencodereview" ./cmd/opencodereview
+        -o "$CRAFT_PART_INSTALL/bin/ocr" ./cmd/opencodereview
       install -Dm644 LICENSE "$CRAFT_PART_INSTALL/share/doc/opencodereview/LICENSE"
