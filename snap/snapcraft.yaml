@@ -1,0 +1,59 @@
+name: opencodereview
+base: core26
+version: '1.13.2'
+title: OpenCodeReview
+summary: AI-powered code reviews from your terminal
+description: |
+  OpenCodeReview reviews Git changes or scans source files using a configured
+  AI provider. It includes configurable review rules, structured reports,
+  saved sessions, and a local browser viewer.
+
+  Configure a provider with opencodereview config provider, review Git changes
+  with opencodereview review, or scan source files with opencodereview scan.
+license: Apache-2.0
+grade: stable
+confinement: strict
+website: https://open-codereview.ai
+source-code: https://github.com/alibaba/open-code-review
+issues: https://github.com/alibaba/open-code-review/issues
+contact: https://github.com/sidalit/opencodereview-snap/issues
+
+platforms:
+  amd64:
+  arm64:
+
+apps:
+  opencodereview:
+    command: bin/opencodereview
+    plugs:
+      - home
+      - network
+      - network-bind
+      - removable-media
+    environment:
+      HOME: $SNAP_USER_COMMON
+      GIT_EXEC_PATH: $SNAP/usr/lib/git-core
+
+parts:
+  opencodereview:
+    plugin: nil
+    source: https://github.com/alibaba/open-code-review.git
+    source-tag: v$SNAPCRAFT_PROJECT_VERSION
+    build-snaps:
+      - go/1.26/stable
+    build-packages:
+      - git
+    stage-packages:
+      - git
+      - ca-certificates
+    build-environment:
+      - CGO_ENABLED: '0'
+      - GOTOOLCHAIN: local
+    override-build: |
+      commit=$(git rev-parse --short=7 HEAD)
+      build_date=$(git show -s --format=%cI HEAD)
+      install -d "$CRAFT_PART_INSTALL/bin"
+      go build -trimpath \
+        -ldflags "-s -w -X main.Version=$SNAPCRAFT_PROJECT_VERSION -X main.GitCommit=$commit -X main.BuildDate=$build_date" \
+        -o "$CRAFT_PART_INSTALL/bin/opencodereview" ./cmd/opencodereview
+      install -Dm644 LICENSE "$CRAFT_PART_INSTALL/share/doc/opencodereview/LICENSE"
