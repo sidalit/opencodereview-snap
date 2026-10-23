@@ -17,8 +17,12 @@ license: Apache-2.0
 grade: stable
 confinement: strict
 website: https://open-codereview.ai
-source-code: https://github.com/alibaba/open-code-review
-issues: https://github.com/alibaba/open-code-review/issues
+source-code:
+  - https://github.com/alibaba/open-code-review
+  - https://github.com/sidalit/opencodereview-snap
+issues:
+  - https://github.com/alibaba/open-code-review/issues
+  - https://github.com/sidalit/opencodereview-snap/issues
 contact: https://github.com/sidalit/opencodereview-snap/issues
 
 platforms:
