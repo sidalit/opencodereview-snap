@@ -1,62 +1,79 @@
-# OpenCodeReview snap
+<div align="center">
+
+<img src="snap/gui/opencodereview.png" alt="OpenCodeReview logo" width="128" />
+
+# OpenCodeReview
+
+**Review code with AI providers from your terminal.**
 
 [![opencodereview](https://snapcraft.io/opencodereview/badge.svg)](https://snapcraft.io/opencodereview)
+[![Base: core26](https://img.shields.io/badge/Base-core26-2C8C3C?logo=canonical&logoColor=white)](https://snapcraft.io/core26)
+![Confinement: strict](https://img.shields.io/badge/Confinement-strict-2C8C3C)
+[![Maintainer: sidaliteir](https://img.shields.io/badge/Maintainer-sidaliteir-2C8C3C?logo=snapcraft&logoColor=white)](https://snapcraft.io/publisher/sidaliteir)
+![Architectures: amd64 and arm64](https://img.shields.io/badge/Architectures-amd64%20%7C%20arm64-2C8C3C?logo=linux&logoColor=white)
 
-Snap packaging for [OpenCodeReview](https://github.com/alibaba/open-code-review), an AI-powered code review tool with configurable rules, saved sessions and a local review viewer.
+[Getting Started](#getting-started) · [Configure](#configure) · [Limitations](#limitations) · [Build](#build) · [Support](#support) · [License](#license)
 
-Unofficial build, not affiliated with or endorsed by Alibaba or the OpenCodeReview project.
+Unofficial snap packaging for [OpenCodeReview](https://github.com/alibaba/open-code-review), an AI code review tool with saved sessions and a local review viewer.
 
-## Build
+</div>
 
-```bash
-snapcraft pack
-```
+---
 
-## Install and try
+## Getting Started
 
 <a href="https://snapcraft.io/opencodereview"><img alt="Get it from the Snap Store" src="https://snapcraft.io/en/dark/install.svg" width="180"></a>
 
 ```bash
 sudo snap install opencodereview
 sudo snap alias opencodereview.ocr ocr
-sudo snap connect opencodereview:removable-media   # optional: /media, /mnt
-ocr config provider
-ocr config model
+```
+
+The alias enables the upstream `ocr` command; otherwise use `opencodereview.ocr`. Configure a provider below, then review your project:
+
+```bash
 cd ~/my-project
 ocr review
 ```
 
-The alias enables the upstream `ocr` command name. Without it, use `opencodereview.ocr`.
+## Configure
 
-For OpenRouter, replace the placeholders with your model ID and API key:
+This snap has no `snap set` options. For OpenRouter, replace the model and API key placeholders:
 
 ```bash
 ocr config set provider openrouter
-ocr config set model '<openrouter-model-id>'
-ocr config set providers.openrouter.api_key '<openrouter-api-key>'
-# ChatGPT can be used using account plan
-ocr auth login --provider chatgpt [--no-browser]
+ocr config set model 'YOUR_MODEL_ID'
+ocr config set providers.openrouter.api_key 'YOUR_KEY'
 ```
 
-These commands save to `~/snap/opencodereview/common/.opencodereview/config.json`.
+Alternatively, use `ocr auth login --provider chatgpt`; add `--no-browser` when browser opening is unavailable. Interactive configuration is available through `ocr config provider` and `ocr config model`.
 
-Configure a model provider before reviewing code, or use `ocr delegate preview` with your AI agent.
+Settings are saved in `~/snap/opencodereview/common/.opencodereview/config.json`; sessions share that directory. View saved reviews with `ocr viewer`, or use `ocr delegate preview` with your AI agent.
 
-View saved reviews with `ocr viewer`. Configuration and sessions live under `~/snap/opencodereview/common/.opencodereview`.
+```bash
+sudo snap connect opencodereview:removable-media   # optional: /media, /mnt
+```
 
-## Known limitations
+## Limitations
 
-- Projects must be in a non-hidden home folder or connected removable storage. Hidden files directly under your home directory are inaccessible.
-- Host credentials and programs are not shared with the snap. Use provider configuration or environment variables, and HTTP MCP servers instead of host commands.
+- Projects must be in a non-hidden home folder or connected removable storage. Hidden files directly under your home are inaccessible.
+- Host credentials and programs are not shared with the snap. Configure providers inside the snap or pass credentials through environment variables.
+- Use HTTP MCP servers instead of MCP commands that require host-installed programs.
 
-## Update to a new upstream release
+## Build
 
-Change `version` in `snap/snapcraft.yaml`, then rebuild.
+```bash
+git clone https://github.com/sidalit/opencodereview-snap.git
+cd opencodereview-snap
+sudo snap install snapcraft --classic
+snapcraft pack
+```
 
-## Automation
+## Support
 
-Builds, publishing, and dependency updates use [snap-automation](https://github.com/sidalit/snap-automation).
+- **Installation or snap issues:** [open a packaging issue](https://github.com/sidalit/opencodereview-snap/issues).
+- **Application bugs:** [report them upstream](https://github.com/alibaba/open-code-review/issues).
 
 ## License
 
-The packaging is MIT-licensed (see `LICENSE`). OpenCodeReview is Apache-2.0-licensed; Git and the other dependencies carry their own licenses.
+Snap packaging: [MIT](https://github.com/sidalit/opencodereview-snap/blob/main/LICENSE).
