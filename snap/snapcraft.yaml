@@ -52,9 +52,6 @@ parts:
       - go/1.26/stable
     build-packages:
       - git
-    stage-packages:
-      - git
-      - ca-certificates
     build-environment:
       - CGO_ENABLED: '0'
       - GOTOOLCHAIN: local
@@ -66,3 +63,11 @@ parts:
         -ldflags "-s -w -X main.Version=$SNAPCRAFT_PROJECT_VERSION -X main.GitCommit=$commit -X main.BuildDate=$build_date" \
         -o "$CRAFT_PART_INSTALL/bin/ocr" ./cmd/opencodereview
       install -Dm644 LICENSE "$CRAFT_PART_INSTALL/share/doc/opencodereview/LICENSE"
+
+  git:
+    plugin: nil
+    build-attributes: [enable-patchelf]
+    stage-slices:
+      - git_bins
+      - git_http-support
+      - ca-certificates_data
