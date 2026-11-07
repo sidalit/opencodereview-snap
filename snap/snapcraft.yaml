@@ -64,10 +64,7 @@ parts:
         -o "$CRAFT_PART_INSTALL/bin/ocr" ./cmd/opencodereview
       install -Dm644 LICENSE "$CRAFT_PART_INSTALL/share/doc/opencodereview/LICENSE"
 
-  git:
-    plugin: nil
     build-attributes: [enable-patchelf]
     stage-slices:
       - git_bins
       - git_http-support
-      - ca-certificates_data
