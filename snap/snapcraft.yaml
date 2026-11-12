@@ -42,6 +42,7 @@ apps:
     environment:
       HOME: $SNAP_USER_COMMON
       GIT_EXEC_PATH: $SNAP/usr/lib/git-core
+      XDG_CONFIG_HOME: $SNAP_USER_COMMON/.config
 
 parts:
   opencodereview:
