@@ -1,6 +1,6 @@
 name: opencodereview
 base: core26
-version: '1.13.6'
+version: '1.13.8'
 title: OpenCodeReview
 icon: snap/gui/opencodereview.png
 summary: AI-powered code reviews from your terminal
